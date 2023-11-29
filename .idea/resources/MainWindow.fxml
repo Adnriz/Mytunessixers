@@ -45,7 +45,7 @@
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="897.0" layoutY="690.0" mnemonicParsing="false" text="New ">
+      <Button fx:id="addNewSong" layoutX="897.0" layoutY="690.0" mnemonicParsing="false" onAction="#addNewSong" text="New ">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
