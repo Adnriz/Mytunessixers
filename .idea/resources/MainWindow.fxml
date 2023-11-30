@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="892.0" prefWidth="1301.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainControllor">
+<AnchorPane prefHeight="892.0" prefWidth="1301.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainControllor">
    <children>
       <ListView layoutX="877.0" layoutY="160.0" prefHeight="519.0" prefWidth="306.0" />
       <Label layoutX="989.0" layoutY="120.0" prefHeight="40.0" prefWidth="82.0" text="Songs" textAlignment="CENTER" textFill="#433c3c">
@@ -75,7 +75,7 @@
       <Button fx:id="pauseButton" layoutX="482.0" layoutY="640.0" mnemonicParsing="false" onAction="#pauseMedia" text="Pause" />
       <Button fx:id="previousButton" layoutX="574.0" layoutY="640.0" mnemonicParsing="false" onAction="#previousMedia" text="Previous" />
       <Button fx:id="nextButton" layoutX="638.0" layoutY="640.0" mnemonicParsing="false" onAction="#nextMedia" text="Next" />
-      <Label fx:id="textLabel" layoutX="564.0" layoutY="586.0" text="MP3 PLAYER">
+      <Label fx:id="songLabel" layoutX="564.0" layoutY="586.0" text="MP3 PLAYER">
          <font>
             <Font size="28.0" />
          </font>
