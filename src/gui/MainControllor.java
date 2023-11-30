@@ -20,13 +20,10 @@ import java.util.TimerTask;
 public class MainControllor {
 
     @FXML
-    private anchorPane anchorPane;
-    @FXML
     private Label songLabel;
     @FXML
     private Button playButton, pauseButton, previousButton, nextButton;
-    @FXML
-    private Slider volumeSlider;
+
     @FXML
     private ProgressBar songProgressBar;
 
@@ -63,23 +60,6 @@ public class MainControllor {
 
     public void beginTimer() {
 
-        timer = new Timer();
-
-        task = new TimerT
-
-                public  void run() {
-            running = true;
-            double current = mediaPlayer.getCurrentTime().toSeconds();
-            double end = media.getDuration().toSeconds();
-            songProgressBar.setProgress(current/end);
-
-            if(current/end == 1.0) {
-                running = false;
-                timer.cancel();
-            }
-        };
-
-    timer.scheduleAtFixedRate(task, 0, 1000);
 
     }
 
