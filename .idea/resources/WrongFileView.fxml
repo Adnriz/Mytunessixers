@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="166.0" prefWidth="513.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.WrongFileControllor">
+   <children>
+      <Label layoutY="64.0" text="Filetype is not accepted, please use a .mp3 or .wav">
+         <font>
+            <Font name="System Bold" size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="283.0" layoutY="14.0" text="⚠">
+         <font>
+            <Font name="Arial Nova Light" size="50.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

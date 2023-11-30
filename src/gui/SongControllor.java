@@ -1,6 +1,9 @@
 package gui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -16,7 +19,7 @@ public class SongControllor {
     private static final String MUSIC_SAVER = ".idea/Music";
 
 
-    public void fileChoose(ActionEvent actionEvent) {
+    public void fileChoose(ActionEvent actionEvent) throws IOException {
 
         FileChooser fileChooser = new FileChooser();
         Stage stage = new Stage();
@@ -30,7 +33,13 @@ public class SongControllor {
 
             }
             else {
-                    System.out.println("forkert fil type");
+                Stage primaryStage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/WrongFileView.fxml"));
+                Parent root = loader.load();
+                WrongFileControllor wrongFileControllor = loader.getController();
+                primaryStage.setTitle("Error 404");
+                primaryStage.setScene(new Scene(root));
+                primaryStage.show();
                 }
             }
         else {
