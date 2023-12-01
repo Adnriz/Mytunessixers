@@ -40,6 +40,7 @@ public class SongControllor {
                 primaryStage.setTitle("Error 404");
                 primaryStage.setScene(new Scene(root));
                 primaryStage.show();
+                primaryStage.setResizable(false);
                 }
             }
         else {
