@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/LoginWindow.fxml"));
         Parent rootScene = loader.load();
         primaryStage.setScene(new Scene(rootScene));
         primaryStage.show();
@@ -19,3 +19,4 @@ public class Main extends Application {
         primaryStage.setTitle("MyTunes - The number 1 music player for windows");
     }
 }
+

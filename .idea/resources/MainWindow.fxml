@@ -30,7 +30,7 @@
       <Label layoutX="96.0" layoutY="160.0" text="Name" />
       <Label layoutX="233.0" layoutY="160.0" text="Songs" />
       <Label layoutX="365.0" layoutY="160.0" text="Length" />
-      <Button layoutX="128.0" layoutY="690.0" mnemonicParsing="false" text="New ">
+      <Button fx:id="NewPlaylist" layoutX="128.0" layoutY="690.0" mnemonicParsing="false" onAction="#NewPlaylist" text="New ">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>

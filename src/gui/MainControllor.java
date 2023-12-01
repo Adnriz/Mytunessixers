@@ -80,4 +80,18 @@ public class MainControllor {
         stage.setScene(new Scene(root));
         stage.show();
     }
-}
+
+        public void NewPlaylist (ActionEvent actionEvent) throws Exception {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlaylistWindow.fxml"));
+            Parent root = loader.load();
+            PlaylistController playlistController = loader.getController();
+            Stage stage = new Stage();
+            stage.setTitle("Playlist Manager");
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
+    }
+
+
+
+
