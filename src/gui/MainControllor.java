@@ -42,7 +42,19 @@ public class MainControllor {
             stage.setScene(new Scene(root));
             stage.show();
         }
+
+    public void playMedia(ActionEvent actionEvent) {
     }
+
+    public void pauseMedia(ActionEvent actionEvent) {
+    }
+
+    public void previousMedia(ActionEvent actionEvent) {
+    }
+
+    public void nextMedia(ActionEvent actionEvent) {
+    }
+}
 
 
 
