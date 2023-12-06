@@ -54,6 +54,12 @@ public class MainControllor {
 
     public void nextMedia(ActionEvent actionEvent) {
     }
+
+    public void speedBox(ActionEvent actionEvent) {
+    }
+
+    public void resetMedia(ActionEvent actionEvent) {
+    }
 }
 
 
