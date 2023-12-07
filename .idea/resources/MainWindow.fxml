@@ -4,33 +4,26 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="892.0" prefWidth="1301.0" stylesheets="@../../src/css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainControllor">
    <children>
-      <ListView layoutX="877.0" layoutY="160.0" prefHeight="519.0" prefWidth="306.0" />
       <Label layoutX="989.0" layoutY="120.0" prefHeight="40.0" prefWidth="82.0" text="Songs" textAlignment="CENTER" textFill="#433c3c">
          <font>
             <Font name="Franklin Gothic Medium" size="28.0" />
          </font>
       </Label>
-      <Label layoutX="879.0" layoutY="160.0" prefHeight="17.0" prefWidth="36.0" text="Song" />
-      <Label layoutX="1002.0" layoutY="160.0" text="Artist" />
-      <Label layoutX="1143.0" layoutY="160.0" text="Length" />
-      <ListView layoutX="96.0" layoutY="160.0" prefHeight="519.0" prefWidth="306.0" />
       <Label layoutX="199.0" layoutY="120.0" prefHeight="40.0" prefWidth="101.0" text="Playlists" textAlignment="CENTER" textFill="#433c3c">
          <font>
             <Font name="Franklin Gothic Medium" size="28.0" />
          </font>
       </Label>
-      <Label layoutX="96.0" layoutY="160.0" text="Name" />
-      <Label layoutX="233.0" layoutY="160.0" text="Songs" />
-      <Label layoutX="365.0" layoutY="160.0" text="Length" />
       <Button fx:id="NewPlaylist" layoutX="128.0" layoutY="690.0" mnemonicParsing="false" onAction="#NewPlaylist" text="New ">
          <font>
             <Font name="Consolas" size="12.0" />
@@ -84,6 +77,20 @@
       <Slider fx:id="volumeSlider" layoutX="730.0" layoutY="646.0" max="200.0" value="100.0" />
       <Button fx:id="resetButton" layoutX="489.0" layoutY="640.0" mnemonicParsing="false" onAction="#resetMedia" text="Reset" />
       <ComboBox fx:id="speedBox" layoutX="640.0" layoutY="640.0" onAction="#changeSpeed" prefHeight="25.0" prefWidth="76.0" promptText="Speed" />
+      <TableView layoutX="902.0" layoutY="183.0" prefHeight="505.0" prefWidth="284.0">
+        <columns>
+          <TableColumn prefWidth="107.0" text="Song Name" />
+          <TableColumn prefWidth="106.0" text="Artist Name" />
+            <TableColumn prefWidth="68.0" text="Genre" />
+        </columns>
+      </TableView>
+      <TableView layoutX="84.0" layoutY="183.0" prefHeight="505.0" prefWidth="313.0">
+        <columns>
+          <TableColumn prefWidth="119.0" text="Name" />
+          <TableColumn prefWidth="114.0" text="Number of songs" />
+            <TableColumn prefWidth="74.0" text="Time" />
+        </columns>
+      </TableView>
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />
