@@ -16,22 +16,34 @@
                </font>
             </Label>
             <TextField fx:id="nameOfSong" layoutX="45.0" layoutY="88.0" prefHeight="25.0" prefWidth="184.0" promptText="Name of Song" />
+            <Label layoutX="46.0" layoutY="148.0" text="Name the artist">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nameOfArtist" layoutX="45.0" layoutY="175.0" prefHeight="25.0" prefWidth="184.0" promptText="Name the artist" />
          </children></AnchorPane>
-      <Label layoutX="376.0" layoutY="61.0" text="Name the artist">
+      <Label alignment="CENTER" layoutX="256.0" layoutY="288.0" text="Choose file">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="nameOfArtist" layoutX="375.0" layoutY="88.0" prefHeight="25.0" prefWidth="184.0" promptText="Name the artist" />
-      <Label alignment="CENTER" layoutX="256.0" layoutY="173.0" text="Choose file">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Button fx:id="fileChoose" layoutX="275.0" layoutY="200.0" mnemonicParsing="false" onAction="#fileChoose" text="File">
+      <Button fx:id="fileChoose" layoutX="275.0" layoutY="315.0" mnemonicParsing="false" onAction="#fileChoose" text="File">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <Label layoutX="388.0" layoutY="61.0" text="Duration of song">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="durationOfSong" layoutX="388.0" layoutY="88.0" prefHeight="25.0" prefWidth="184.0" promptText="Duration of song" />
+      <Label layoutX="388.0" layoutY="148.0" text="Genre of the song">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="genreOfTheSong" layoutX="388.0" layoutY="175.0" prefHeight="25.0" prefWidth="184.0" promptText="example. pop, rock, country" />
    </children>
 </AnchorPane>

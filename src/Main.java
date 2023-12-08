@@ -1,3 +1,4 @@
+import dal.SQLController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -23,6 +24,7 @@ public class Main extends Application {
         primaryStage.show();
         primaryStage.setResizable(false);
         primaryStage.setTitle("MyTunes - The number 1 music player for windows");
+
     }
 
 

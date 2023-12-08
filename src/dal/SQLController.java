@@ -1,42 +1,37 @@
 package dal;
 
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLController {
-    private Connection connection;
+    private SQLServerDataSource dataSource;
 
     public SQLController() {
-        // JDBC URL, username, and password
-        String url = "jdbc:mysql://10.176.111.34/6_And_The_Music";
-        String user = "CSe2023a_e_36 ";
-        String password = "CSe2023aE36#23";
-
-        try {
-            // Establish the connection
-            connection = DriverManager.getConnection(url, user, password);
-            if (connection != null) {
-                System.out.println("Connected to the database!");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        dataSource = new SQLServerDataSource();
+        dataSource.setServerName("10.176.111.31");
+        dataSource.setDatabaseName("6_And_The_Music");
+        dataSource.setUser("CSe2023a_e_36");
+        dataSource.setPassword("CSe2023aE36#23");
+        dataSource.setPortNumber(1433);
     }
 
-    // Implement methods to perform SQL operations (insert, select, update, delete)
-    // Example methods could include adding music to a playlist, retrieving playlists, etc.
-
-    public void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Connection closed.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public Connection getConnection() throws SQLServerException {
+        return dataSource.getConnection();
     }
 
-    // Other methods for SQL operations...
+
+    public static void main(String[] args) throws SQLException {
+
+        SQLController databaseConnector = new SQLController();
+
+        try (Connection connection = databaseConnector.getConnection()) {
+
+            System.out.println("Is it open? " + !connection.isClosed());
+
+        } //Connection gets closed here
+    }
 }
