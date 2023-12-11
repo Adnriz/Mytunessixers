@@ -3,20 +3,31 @@ package dal;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+
+
 
 public class SQLController {
+    private static final String PROP_FILE = ".idea/config/config.settings";
     private SQLServerDataSource dataSource;
 
-    public SQLController() {
+    public SQLController() throws IOException{
+        Properties databaseProperties = new Properties();
+        databaseProperties.load(new FileInputStream(new File(PROP_FILE)));
+
         dataSource = new SQLServerDataSource();
-        dataSource.setServerName("10.176.111.31");
-        dataSource.setDatabaseName("6_And_The_Music");
-        dataSource.setUser("CSe2023a_e_36");
-        dataSource.setPassword("CSe2023aE36#23");
+        dataSource.setServerName(databaseProperties.getProperty("server"));
+        dataSource.setDatabaseName(databaseProperties.getProperty("database"));
+        dataSource.setUser(databaseProperties.getProperty("user"));
+        dataSource.setPassword(databaseProperties.getProperty("password"));
         dataSource.setPortNumber(1433);
+        dataSource.setTrustServerCertificate(true);
     }
 
     public Connection getConnection() throws SQLServerException {
@@ -24,7 +35,7 @@ public class SQLController {
     }
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
 
         SQLController databaseConnector = new SQLController();
 
