@@ -220,7 +220,6 @@ public class MainControllor implements Initializable{
             }
             else {
 
-                //mediaPlayer.setRate(Integer.parseInt(speedBox.getValue()) * 0.01);
                 mediaPlayer.setRate(Integer.parseInt(speedBox.getValue().substring(0, speedBox.getValue().length() - 1)) * 0.01);
             }
         }
@@ -245,7 +244,7 @@ public class MainControllor implements Initializable{
                 }
             };
 
-            timer.scheduleAtFixedRate(task, 0, 1000);
+            timer.scheduleAtFixedRate(task, 100, 500);
         }
 
         public void cancelTimer() {
