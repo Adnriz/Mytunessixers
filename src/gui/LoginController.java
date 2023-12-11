@@ -34,4 +34,5 @@ public class LoginController {
             e.printStackTrace(); // Handle exception appropriately
         }
     }
+    // test test dur den nu
 }
