@@ -1,5 +1,6 @@
 package gui;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dal.SQLController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,10 +16,7 @@ import java.nio.file.Files;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 public class SongControllor {
@@ -35,14 +33,11 @@ public class SongControllor {
 
     private static final String MUSIC_SAVER = ".idea/Music";
 
-
-
-
     private void durationConverter() {
 
     }
 
-    public void fileChoose(ActionEvent actionEvent) throws IOException {
+    public void fileChoose(ActionEvent actionEvent) throws IOException, SQLServerException {
 
         FileChooser fileChooser = new FileChooser();
         Stage stage = new Stage();
@@ -55,19 +50,18 @@ public class SongControllor {
                 saveSong(selectedFile);
 
 
-
-                String titleOfSong = nameOfSong.toString();
-                String artistOfSong = nameOfArtist.toString();
-                String genreOfSong = genreOfTheSong.toString();
+                String titleOfSong = nameOfSong.getText();
+                String artistOfSong = nameOfArtist.getText();
+                String genreOfSong = genreOfTheSong.getText();
                 String filePathOfSong = selectedFile.getPath().toString();
                 int duration = 0;
-                //addToDB(titleOfSong, artistOfSong, duration, filePathOfSong);
+                addToDB(titleOfSong, artistOfSong, duration, filePathOfSong);
+             //   System.out.println(titleOfSong + ", " + artistOfSong + "");
 
 
                 stage.close();
 
-            }
-            else {
+            } else {
                 Stage primaryStage = new Stage();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/WrongFileView.fxml"));
                 Parent root = loader.load();
@@ -76,12 +70,12 @@ public class SongControllor {
                 primaryStage.setScene(new Scene(root));
                 primaryStage.show();
                 primaryStage.setResizable(false);
-                }
             }
-        else {
+        } else {
             System.out.println("Virker ikke");
         }
     }
+
     private void saveSong(File selectedFile) {
         //Gemmer den mappe som filen skal ligges i
         File saveFolder = new File(MUSIC_SAVER);
@@ -99,28 +93,42 @@ public class SongControllor {
             e.printStackTrace();
         }
     }
-/*
-    private void addToDB(String title, String artist, int duration, String filepath) {
-        try (sqlController.getConnection()){
-            String query = "INSERT INTO Music (title, artist, duration, filepath) VALUES(????)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
-                preparedStatement.setString(1, title);
-                preparedStatement.setString(2, artist);
-                preparedStatement.setInt(3, duration);
-                preparedStatement.setString(4, filepath);
 
-                int rowsAffected = preparedStatement.executeUpdate();
+    private void addToDB(String title, String artist, int duration, String filepath) throws SQLServerException {
+        try {
+            if (sqlController == null) {
+                try {
+                    sqlController = new SQLController();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
-                if (rowsAffected>0) {
-                    System.out.println("Song added without fail");
+            try (Connection connection = sqlController.getConnection()) {
+                String query = "INSERT INTO Music (title, artist, duration, filepath) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setString(2, artist);
+                    preparedStatement.setInt(3, duration);
+                    preparedStatement.setString(4, filepath);
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        System.out.println("Song added without fail");
+                    } else {
+                        System.out.println("Fail, something went wrong");
+                    }
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
-                else {
-                    System.out.println("fail, something went wrong");
-                }
+            } finally {
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-*/
 }
+
+
