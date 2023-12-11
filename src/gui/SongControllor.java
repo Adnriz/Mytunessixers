@@ -23,7 +23,6 @@ import java.sql.SQLException;
 
 public class SongControllor {
 
-    private SQLController sqlController;
     @FXML
     private TextField nameOfSong;
     @FXML
@@ -32,7 +31,7 @@ public class SongControllor {
     private TextField durationOfSong;
     @FXML
     private TextField genreOfTheSong;
-
+    private SQLController sqlController;
     private static final String MUSIC_SAVER = ".idea/Music";
 
 
@@ -101,7 +100,7 @@ public class SongControllor {
     }
 /*
     private void addToDB(String title, String artist, int duration, String filepath) {
-        try (sqlController.getConnection()){
+        try (Connection connection = DriverManager.getConnection()){
             String query = "INSERT INTO Music (title, artist, duration, filepath) VALUES(????)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
                 preparedStatement.setString(1, title);
@@ -122,5 +121,7 @@ public class SongControllor {
             throw new RuntimeException(e);
         }
     }
-*/
+
+ */
+
 }
