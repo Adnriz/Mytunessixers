@@ -38,7 +38,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="durationOfSong" layoutX="388.0" layoutY="88.0" prefHeight="25.0" prefWidth="184.0" promptText="Duration of song" />
+      <TextField fx:id="durationOfSong" layoutX="388.0" layoutY="88.0" prefHeight="25.0" prefWidth="184.0" promptText="example. 4:18 (min : sec)" />
       <Label layoutX="388.0" layoutY="148.0" text="Genre of the song">
          <font>
             <Font size="18.0" />
