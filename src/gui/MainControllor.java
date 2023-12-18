@@ -2,8 +2,10 @@ package gui;
 
 
 import bll.Playlist;
+import bll.util.SongManager;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dal.SQLController;
+import gui.Model.SongModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -61,17 +63,27 @@ public class MainControllor implements Initializable{
     private boolean running;
 
     private SQLController sqlController;
-    @FXML
-    private TableView<Playlist> playlistView;
-    @FXML
-    private TableColumn<Playlist, String> tvPlaylistName;
 
-    // ...
+    @FXML
+    private TableColumn titleColumn;
+    @FXML
+    private TableColumn artistColumn;
+    @FXML
+    private TableColumn genreColumn;
+    public ListView<Song> lstSongs;
+    @FXML
+    private TableView songTableView;
+    private SongModel songModel;
 
-    public TableView<Playlist> getPlaylistTableView() {
-        return playlistView;
+    public MainControllor()  {
+
+        try {
+            songModel = new SongModel();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
     @FXML
     private void addNewSong(ActionEvent actionEvent) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SongManager.fxml"));
@@ -131,6 +143,15 @@ public class MainControllor implements Initializable{
             });
 
             songProgressBar.setStyle("-fx-accent: #00FF00;");
+
+            // Initialize the person table with the two columns.
+            titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
+            artistColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+
+            // add data from observable list
+            lstSongs.setItems(songModel.getObservableSongs());
+            lstSongs.setItems(songModel.getObservableSongs());
 
 
         }
