@@ -84,7 +84,7 @@
             <TableColumn fx:id="genreColumn" prefWidth="68.0" text="Genre" />
         </columns>
       </TableView>
-      <TableView fx:id="playlistView" layoutX="78.0" layoutY="220.0" onMouseDragged="#testClick" prefHeight="505.0" prefWidth="313.0">
+      <TableView fx:id="playlistView" layoutX="78.0" layoutY="220.0" prefHeight="505.0" prefWidth="313.0">
         <columns>
           <TableColumn fx:id="tvPlaylistName" prefWidth="119.0" text="Name" />
           <TableColumn fx:id="tvPlaylistSongs" prefWidth="114.0" text="Number of songs" />

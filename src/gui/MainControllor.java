@@ -318,7 +318,7 @@ public class MainControllor implements Initializable{
             running = false;
             timer.cancel();
         }
-        
+
 
 
 }
