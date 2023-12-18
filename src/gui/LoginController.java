@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +29,7 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainWindow.fxml"));
             Parent root = loader.load();
             Stage mainStage = new Stage();
+            MainControllor mainControllor = loader.getController();
             mainStage.setScene(new Scene(root));
             mainStage.show();
         } catch (Exception e) {
