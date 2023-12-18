@@ -2,6 +2,7 @@ package dal;
 
 import gui.Song;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,10 @@ import java.util.List;
 
 public class SongDB {
     private SQLController sqlController;
+
+    public SongDB() throws IOException {
+        this.sqlController = new SQLController();
+    }
 
     public List<Song> getAllSongs() throws Exception {
 
@@ -25,7 +30,7 @@ public class SongDB {
             while (rs.next()) {
 
                 //Map DB row to Movie object
-                String name = rs.getString("Name");
+                String name = rs.getString("title");
                 String artist = rs.getString("Artist");
                 String genre = rs.getString("Genre");
 

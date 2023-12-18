@@ -9,6 +9,7 @@ import gui.Model.SongModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,7 +76,9 @@ public class MainControllor implements Initializable{
     private TableView songTableView;
     private SongModel songModel;
 
-    public MainControllor()  {
+    @FXML
+    private TableView<Song> tableView;
+    public MainControllor() throws Exception {
 
         try {
             songModel = new SongModel();
@@ -83,6 +86,8 @@ public class MainControllor implements Initializable{
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        this.songModel = new SongModel();
     }
     @FXML
     private void addNewSong(ActionEvent actionEvent) throws Exception{
@@ -150,9 +155,10 @@ public class MainControllor implements Initializable{
             artistColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
 
             // add data from observable list
-            lstSongs.setItems(songModel.getObservableSongs());
-            lstSongs.setItems(songModel.getObservableSongs());
+            songTableView.setItems(songModel.getObservableSongs());
 
+            tableView = new TableView<>();
+            ObservableList<Song> songs = songModel.getObservableSongs();
 
         }
 
