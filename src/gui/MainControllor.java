@@ -1,8 +1,12 @@
 package gui;
 
-import javafx.application.Application;
+
+import bll.Playlist;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import dal.SQLController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.io.File;
@@ -17,12 +22,13 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
 
 public class MainControllor implements Initializable{
 
@@ -38,7 +44,6 @@ public class MainControllor implements Initializable{
     private Slider volumeSlider;
     @FXML
     private ProgressBar songProgressBar;
-
     private Media media;
     private MediaPlayer mediaPlayer;
 
@@ -55,7 +60,19 @@ public class MainControllor implements Initializable{
 
     private boolean running;
 
-@FXML
+    private SQLController sqlController;
+    @FXML
+    private TableView<Playlist> playlistView;
+    @FXML
+    private TableColumn<Playlist, String> tvPlaylistName;
+
+    // ...
+
+    public TableView<Playlist> getPlaylistTableView() {
+        return playlistView;
+    }
+
+    @FXML
     private void addNewSong(ActionEvent actionEvent) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SongManager.fxml"));
         Parent root = loader.load();
@@ -66,19 +83,18 @@ public class MainControllor implements Initializable{
         stage.show();
     }
 
-        public void NewPlaylist (ActionEvent actionEvent) throws Exception {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlaylistWindow.fxml"));
-            Parent root = loader.load();
-            PlaylistController playlistController = loader.getController();
-            Stage stage = new Stage();
-            stage.setTitle("Playlist Manager");
-            stage.setScene(new Scene(root));
-            stage.show();
-        }
+    public void NewPlaylist (ActionEvent actionEvent) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlaylistWindow.fxml"));
+        Parent root = loader.load();
+        PlaylistController playlistController = loader.getController();
+        Stage stage = new Stage();
+        stage.setTitle("Playlist Manager");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 
         @Override
         public void initialize(URL arg0, ResourceBundle arg1) {
-
             songs = new ArrayList<File>();
 
             directory = new File(".idea/Music");
@@ -115,6 +131,8 @@ public class MainControllor implements Initializable{
             });
 
             songProgressBar.setStyle("-fx-accent: #00FF00;");
+
+
         }
 
         public void playMedia() {
@@ -252,4 +270,5 @@ public class MainControllor implements Initializable{
             running = false;
             timer.cancel();
         }
+
     }
