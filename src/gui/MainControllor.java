@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.io.File;
@@ -72,7 +73,7 @@ public class MainControllor implements Initializable{
     private SongModel songModel;
     private PlaylistModel playlistModel;
     @FXML
-    private TableView playlistView;
+    private TableView<Playlist> playlistView;
     @FXML
     private TableColumn tvPlaylistName;
 
@@ -147,7 +148,6 @@ public class MainControllor implements Initializable{
 
                 @Override
                 public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-
                     mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
                 }
             });
@@ -306,4 +306,8 @@ public class MainControllor implements Initializable{
             timer.cancel();
         }
 
+
+    public void testClick(MouseEvent mouseEvent) {
+        System.out.println("Store patter");
     }
+}
