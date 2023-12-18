@@ -8,6 +8,7 @@ import gui.Model.PlaylistModel;
 import gui.Model.SongModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -151,6 +152,18 @@ public class MainControllor implements Initializable{
                     mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
                 }
             });
+
+            ObservableList<TablePosition> selectedCells = playlistView.getSelectionModel().getSelectedCells() ;
+            selectedCells.addListener((ListChangeListener.Change<? extends TablePosition> change) -> {
+                if (selectedCells.size() > 0) {
+                    TablePosition selectedCell = selectedCells.get(0);
+                    TableColumn column = selectedCell.getTableColumn();
+                    int rowIndex = selectedCell.getRow();
+                    Object playlist = column.getCellObservableValue(rowIndex).getValue();
+                    System.out.println("All I want for christmas is you");
+                }
+            });
+
 
             songProgressBar.setStyle("-fx-accent: #00FF00;");
 
@@ -305,9 +318,7 @@ public class MainControllor implements Initializable{
             running = false;
             timer.cancel();
         }
+        
 
 
-    public void testClick(MouseEvent mouseEvent) {
-        System.out.println("Store patter");
-    }
 }
