@@ -2,7 +2,7 @@ package bll.util;
 
 
 import dal.SongDB;
-import gui.Song;
+import BE.Song;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,14 +1,13 @@
 package gui;
 
 
-import bll.Playlist;
-import bll.util.SongManager;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+import BE.Playlist;
+import BE.Song;
 import dal.SQLController;
+import gui.Model.PlaylistModel;
 import gui.Model.SongModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,10 +25,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 
@@ -75,20 +70,30 @@ public class MainControllor implements Initializable{
     @FXML
     private TableView songTableView;
     private SongModel songModel;
+    private PlaylistModel playlistModel;
+    @FXML
+    private TableView playlistView;
+    @FXML
+    private TableColumn tvPlaylistName;
 
     @FXML
     private TableView<Song> tableView;
     public MainControllor() throws Exception {
-
         try {
             songModel = new SongModel();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-
         this.songModel = new SongModel();
+         try {
+        playlistModel = new PlaylistModel();
     }
+        catch (Exception e) {
+        e.printStackTrace();
+    }
+        this.playlistModel = new PlaylistModel();
+}
     @FXML
     private void addNewSong(ActionEvent actionEvent) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SongManager.fxml"));
@@ -150,15 +155,18 @@ public class MainControllor implements Initializable{
             songProgressBar.setStyle("-fx-accent: #00FF00;");
 
             // Initialize the person table with the two columns.
-            titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
-            artistColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+            titleColumn.setCellValueFactory(new PropertyValueFactory<>("songName"));
+            artistColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
+            genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+
+            tvPlaylistName.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
 
             // add data from observable list
             songTableView.setItems(songModel.getObservableSongs());
-
-            tableView = new TableView<>();
             ObservableList<Song> songs = songModel.getObservableSongs();
+
+            playlistView.setItems(playlistModel.getObservablePlaylists());
+            ObservableList<Playlist> playlists = playlistModel.getObservablePlaylists();
 
         }
 

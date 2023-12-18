@@ -1,7 +1,7 @@
 package gui.Model;
 
 import bll.util.SongManager;
-import gui.Song;
+import BE.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
