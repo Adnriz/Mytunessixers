@@ -3,6 +3,8 @@ package gui;
 
 import BE.Playlist;
 import BE.Song;
+import bll.util.PlaylistManager;
+import dal.PlaylistDB;
 import dal.SQLController;
 import gui.Model.PlaylistModel;
 import gui.Model.SongModel;
@@ -26,12 +28,15 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 
 public class MainControllor implements Initializable{
-
+    private String selectedPlaylist;
+    @FXML
+    private Label selectedPlaylistName;
     @FXML
     private Pane pane;
     @FXML
@@ -77,6 +82,8 @@ public class MainControllor implements Initializable{
     private TableView<Playlist> playlistView;
     @FXML
     private TableColumn tvPlaylistName;
+    @FXML
+    private ListView playlistSongsList;
 
     @FXML
     private TableView<Song> tableView;
@@ -158,9 +165,6 @@ public class MainControllor implements Initializable{
                 if (selectedCells.size() > 0) {
                     TablePosition selectedCell = selectedCells.get(0);
                     TableColumn column = selectedCell.getTableColumn();
-                    int rowIndex = selectedCell.getRow();
-                    Object playlist = column.getCellObservableValue(rowIndex).getValue();
-                    System.out.println("All I want for christmas is you");
                 }
             });
 
@@ -182,6 +186,20 @@ public class MainControllor implements Initializable{
             ObservableList<Playlist> playlists = playlistModel.getObservablePlaylists();
 
         }
+
+        @FXML
+        private void handleRowClicked(MouseEvent event) throws IOException {
+            if (event.getClickCount() == 2) {
+                Playlist selectedItem = playlistView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    String name = selectedItem.getPlaylistName();
+                    selectedPlaylistName.setText(name);
+                }
+            }
+        }
+
+
+
 
         public void playMedia() {
 
@@ -320,5 +338,14 @@ public class MainControllor implements Initializable{
         }
 
 
+    public void removeSongFromPlaylist(ActionEvent actionEvent) {
+    }
 
+    public void addSongToPlaylist(ActionEvent actionEvent) {
+        if (!selectedPlaylistName.getText().isEmpty()) {
+            
+
+        }
+
+    }
 }
