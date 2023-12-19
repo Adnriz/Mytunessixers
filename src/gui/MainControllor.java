@@ -2,13 +2,13 @@ package gui;
 
 
 import BE.Playlist;
+import BE.PlaylistSong;
 import BE.Song;
 import dal.SQLController;
 import gui.Model.PlaylistModel;
 import gui.Model.SongModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,10 +33,6 @@ import java.util.*;
 
 public class MainControllor implements Initializable{
 
-    @FXML
-    private Button moveToPlaylist;
-    @FXML
-    private Button removeFromPlaylist;
     @FXML
     private TextField SearchBar;
     @FXML
@@ -86,6 +82,9 @@ public class MainControllor implements Initializable{
     private TableColumn tvPlaylistName;
 
     @FXML
+    private ListView<Song> showSongs;
+
+    @FXML
     private TableView<Song> tableView;
     public MainControllor() throws Exception {
         try {
@@ -95,14 +94,14 @@ public class MainControllor implements Initializable{
             e.printStackTrace();
         }
         this.songModel = new SongModel();
-        try {
-            playlistModel = new PlaylistModel();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        this.playlistModel = new PlaylistModel();
+         try {
+        playlistModel = new PlaylistModel();
     }
+        catch (Exception e) {
+        e.printStackTrace();
+    }
+        this.playlistModel = new PlaylistModel();
+}
     @FXML
     private void addNewSong(ActionEvent actionEvent) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SongManager.fxml"));
@@ -124,105 +123,20 @@ public class MainControllor implements Initializable{
         stage.show();
     }
 
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        songs = new ArrayList<File>();
+        @Override
+        public void initialize(URL arg0, ResourceBundle arg1) {
+            songs = new ArrayList<File>();
 
-        directory = new File(".idea/Music");
+            directory = new File(".idea/Music");
 
-        files = directory.listFiles();
+            files = directory.listFiles();
 
-        if(files != null) {
+            if(files != null) {
 
-            for(File file : files) {
+                for(File file : files) {
 
-                songs.add(file);
-            }
-        }
-
-        media = new Media(songs.get(songNumber).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
-
-        songLabel.setText(songs.get(songNumber).getName());
-
-        for(int i = 0; i < speeds.length; i++) {
-
-            speedBox.getItems().add(Integer.toString(speeds[i])+"%");
-        }
-
-        speedBox.setOnAction(this::changeSpeed);
-
-        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-                mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
-            }
-        });
-
-        ObservableList<TablePosition> selectedCells = playlistView.getSelectionModel().getSelectedCells() ;
-        selectedCells.addListener((ListChangeListener.Change<? extends TablePosition> change) -> {
-            if (selectedCells.size() > 0) {
-                TablePosition selectedCell = selectedCells.get(0);
-                TableColumn column = selectedCell.getTableColumn();
-                int rowIndex = selectedCell.getRow();
-                Object playlist = column.getCellObservableValue(rowIndex).getValue();
-                System.out.println("All I want for christmas is you");
-            }
-        });
-
-
-        songProgressBar.setStyle("-fx-accent: #00FF00;");
-
-        // Initialize the person table with the two columns.
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("songName"));
-        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
-        genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-
-        tvPlaylistName.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
-
-        // add data from observable list
-        songTableView.setItems(songModel.getObservableSongs());
-        ObservableList<Song> songs = songModel.getObservableSongs();
-
-        playlistView.setItems(playlistModel.getObservablePlaylists());
-        ObservableList<Playlist> playlists = playlistModel.getObservablePlaylists();
-
-        Searcher();
-
-    }
-
-    public void playMedia() {
-
-        beginTimer();
-        changeSpeed(null);
-        mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
-        mediaPlayer.play();
-    }
-
-    public void pauseMedia() {
-
-        cancelTimer();
-        mediaPlayer.pause();
-    }
-
-    public void resetMedia() {
-
-        songProgressBar.setProgress(0);
-        mediaPlayer.seek(Duration.seconds(0));
-    }
-
-    public void previousMedia() {
-
-        if(songNumber > 0) {
-
-            songNumber--;
-
-            mediaPlayer.stop();
-
-            if(running) {
-
-                cancelTimer();
+                    songs.add(file);
+                }
             }
 
             media = new Media(songs.get(songNumber).toURI().toString());
@@ -230,105 +144,206 @@ public class MainControllor implements Initializable{
 
             songLabel.setText(songs.get(songNumber).getName());
 
-            playMedia();
-        }
-        else {
+            for(int i = 0; i < speeds.length; i++) {
 
-            songNumber = songs.size() - 1;
-
-            mediaPlayer.stop();
-
-            if(running) {
-
-                cancelTimer();
+                speedBox.getItems().add(Integer.toString(speeds[i])+"%");
             }
 
-            media = new Media(songs.get(songNumber).toURI().toString());
-            mediaPlayer = new MediaPlayer(media);
+            speedBox.setOnAction(this::changeSpeed);
 
-            songLabel.setText(songs.get(songNumber).getName());
+            volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
-            playMedia();
+                @Override
+                public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                    mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+                }
+            });
+
+           /* ObservableList<TablePosition> selectedCells = playlistView.getSelectionModel().getSelectedCells() ;
+            selectedCells.addListener((ListChangeListener.Change<? extends TablePosition> change) -> {
+                if (selectedCells.size() > 0) {
+                    TablePosition selectedCell = selectedCells.get(0);
+                    TableColumn column = selectedCell.getTableColumn();
+                    int rowIndex = selectedCell.getRow();
+                    Object playlist = column.getCellObservableValue(rowIndex).getValue();
+                    System.out.println("All I want for christmas is you");
+                }
+            });*/
+
+
+            songProgressBar.setStyle("-fx-accent: #00FF00;");
+            update();
+            Searcher();
+            playlistView.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> {
+                if (nv != null) {
+                    try {
+                        playlistModel.updateSongsInPlaylist(nv);
+                        showSongs.setItems(playlistModel.getObservableSongsInPlaylist());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
-    }
+        public void update(){
+            try {
+                titleColumn.setCellValueFactory(new PropertyValueFactory<>("songName"));
+                artistColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
+                genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+                tvPlaylistName.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
+                songModel.updateSongs();
+                songTableView.setItems(songModel.getObservableSongs());
+                ObservableList<Song> songs = songModel.getObservableSongs();
+                playlistModel.updatePlaylist();
+                playlistView.setItems(playlistModel.getObservablePlaylists());
+                ObservableList<Playlist> playlists = playlistModel.getObservablePlaylists();
+                if(playlistModel.getPlaylist() != null){
+                    playlistModel.updateSongsInPlaylist(playlistModel.getPlaylist());
+                    showSongs.setItems(playlistModel.getObservableSongsInPlaylist());
+                }
 
-    public void nextMedia() {
-
-        if(songNumber < songs.size() - 1) {
-
-            songNumber++;
-
-            mediaPlayer.stop();
-
-            if(running) {
-
-                cancelTimer();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-
-            media = new Media(songs.get(songNumber).toURI().toString());
-            mediaPlayer = new MediaPlayer(media);
-
-            songLabel.setText(songs.get(songNumber).getName());
-
-            playMedia();
+            
         }
-        else {
+        public void playMedia() {
 
-            songNumber = 0;
-
-            mediaPlayer.stop();
-
-            media = new Media(songs.get(songNumber).toURI().toString());
-            mediaPlayer = new MediaPlayer(media);
-
-            songLabel.setText(songs.get(songNumber).getName());
-
-            playMedia();
+            beginTimer();
+            changeSpeed(null);
+            mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+            mediaPlayer.play();
         }
-    }
 
-    public void changeSpeed(ActionEvent event) {
+        public void pauseMedia() {
 
-        if(speedBox.getValue() == null) {
-
-            mediaPlayer.setRate(1);
+            cancelTimer();
+            mediaPlayer.pause();
         }
-        else {
 
-            mediaPlayer.setRate(Integer.parseInt(speedBox.getValue().substring(0, speedBox.getValue().length() - 1)) * 0.01);
+        public void resetMedia() {
+
+            songProgressBar.setProgress(0);
+            mediaPlayer.seek(Duration.seconds(0));
         }
-    }
 
-    public void beginTimer() {
+        public void previousMedia() {
 
-        timer = new Timer();
+            if(songNumber > 0) {
 
-        task = new TimerTask() {
+                songNumber--;
 
-            public void run() {
+                mediaPlayer.stop();
 
-                running = true;
-                double current = mediaPlayer.getCurrentTime().toSeconds();
-                double end = media.getDuration().toSeconds();
-                songProgressBar.setProgress(current/end);
-
-                if(current/end == 1) {
+                if(running) {
 
                     cancelTimer();
                 }
+
+                media = new Media(songs.get(songNumber).toURI().toString());
+                mediaPlayer = new MediaPlayer(media);
+
+                songLabel.setText(songs.get(songNumber).getName());
+
+                playMedia();
             }
-        };
+            else {
 
-        timer.scheduleAtFixedRate(task, 100, 500);
-    }
+                songNumber = songs.size() - 1;
 
-    public void cancelTimer() {
+                mediaPlayer.stop();
 
-        running = false;
-        timer.cancel();
-    }
+                if(running) {
 
-    private void Searcher(){
+                    cancelTimer();
+                }
+
+                media = new Media(songs.get(songNumber).toURI().toString());
+                mediaPlayer = new MediaPlayer(media);
+
+                songLabel.setText(songs.get(songNumber).getName());
+
+                playMedia();
+            }
+        }
+
+        public void nextMedia() {
+
+            if(songNumber < songs.size() - 1) {
+
+                songNumber++;
+
+                mediaPlayer.stop();
+
+                if(running) {
+
+                    cancelTimer();
+                }
+
+                media = new Media(songs.get(songNumber).toURI().toString());
+                mediaPlayer = new MediaPlayer(media);
+
+                songLabel.setText(songs.get(songNumber).getName());
+
+                playMedia();
+            }
+            else {
+
+                songNumber = 0;
+
+                mediaPlayer.stop();
+
+                media = new Media(songs.get(songNumber).toURI().toString());
+                mediaPlayer = new MediaPlayer(media);
+
+                songLabel.setText(songs.get(songNumber).getName());
+
+                playMedia();
+            }
+        }
+
+        public void changeSpeed(ActionEvent event) {
+
+            if(speedBox.getValue() == null) {
+
+                mediaPlayer.setRate(1);
+            }
+            else {
+
+                mediaPlayer.setRate(Integer.parseInt(speedBox.getValue().substring(0, speedBox.getValue().length() - 1)) * 0.01);
+            }
+        }
+
+        public void beginTimer() {
+
+            timer = new Timer();
+
+            task = new TimerTask() {
+
+                public void run() {
+
+                    running = true;
+                    double current = mediaPlayer.getCurrentTime().toSeconds();
+                    double end = media.getDuration().toSeconds();
+                    songProgressBar.setProgress(current/end);
+
+                    if(current/end == 1) {
+
+                        cancelTimer();
+                    }
+                }
+            };
+
+            timer.scheduleAtFixedRate(task, 100, 500);
+        }
+
+        public void cancelTimer() {
+
+            running = false;
+            timer.cancel();
+        }
+
+        private void Searcher(){
         SearchBar.textProperty().addListener((((observable, oldValue, newValue) ->
         {
             try{
@@ -338,5 +353,55 @@ public class MainControllor implements Initializable{
                 e.printStackTrace();
             }
         })));
+    }
+
+        public void ClearBtn(ActionEvent actionEvent) {
+    }
+
+    public void moveToPlaylist(ActionEvent actionEvent) {
+        if (playlistView.getSelectionModel().getSelectedItem() != null&& songTableView.getSelectionModel().getSelectedItem() != null){
+            Song song = (Song) songTableView.getSelectionModel().getSelectedItem();
+            Playlist playlist = (Playlist) playlistView.getSelectionModel().getSelectedItem();
+            try {
+                PlaylistSong playlistSong = new PlaylistSong(playlist.getId(), song.getId());
+                playlistModel.addSongToPlaylist(playlistSong);
+                update();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void deletePlaylist(ActionEvent actionEvent) {
+        try {
+            playlistModel.deletePlaylist(playlistModel.getPlaylist());
+            update();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteSongs(ActionEvent actionEvent) throws Exception {
+        Song song = (Song) songTableView.getSelectionModel().getSelectedItem();
+        SongControllor songControllor = new SongControllor();
+        songControllor.deleteSong(song);
+        update();
+    }
+
+    public void removeFromPlaylist(ActionEvent actionEvent){
+
+        try {
+            Song song = showSongs.getSelectionModel().getSelectedItem();
+            Playlist playlist = playlistView.getSelectionModel().getSelectedItem();
+            PlaylistSong playlistSong = new PlaylistSong(playlist.getId(), song.getId());
+            playlistModel.removeFromPlaylist(playlistSong);
+            update();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setPlaylist(MouseEvent mouseEvent) {
+        playlistModel.setPlaylist(playlistView.getSelectionModel().getSelectedItem());
     }
 }

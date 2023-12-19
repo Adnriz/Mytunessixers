@@ -11,9 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+import BE.Song;
 import javax.sound.sampled.*;
-import java.beans.Encoder;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.io.File;
@@ -21,10 +21,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.*;
-import java.util.Map;
+
 
 
 public class SongControllor {
+
 
     private SQLController sqlController;
     @FXML
@@ -84,13 +85,13 @@ public class SongControllor {
     private boolean isFilledOutCheck() {
         if (!genreOfTheSong.getText().isEmpty() && !nameOfSong.getText().isEmpty() && !nameOfArtist.getText().isEmpty() && !durationOfSong.getText().isEmpty()) {
             fileChoose.setDisable(false);
-        return true;
-    }
-        else {
+            return true;
+        } else {
             fileChoose.setDisable(true);
             return false;
         }
     }
+
     private void saveSong(File selectedFile) {
         //Gemmer den mappe som filen skal ligges i
         File saveFolder = new File(MUSIC_SAVER);
@@ -149,6 +150,7 @@ public class SongControllor {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
+
             } finally {
 
             }
@@ -156,6 +158,31 @@ public class SongControllor {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteSong(Song song) throws Exception {
+        try {
+            if (sqlController == null) {
+                try {
+                    sqlController = new SQLController();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            String sql = "DELETE FROM dbo.Music WHERE GenreID = ?;";
+            try (Connection conn = sqlController.getConnection()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+
+                stmt.setInt(1, song.getId());
+                stmt.executeUpdate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new Exception("Could not delete song", ex);
+            }
+        } finally {
+
+        }
+    }
 }
+
 
 

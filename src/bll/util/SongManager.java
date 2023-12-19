@@ -10,6 +10,7 @@ import java.util.List;
 public class SongManager {
 
     private SongSearcher songSearcher = new SongSearcher();
+    private SongDB songDB;
 
     public List<Song> SearchSongs(String query) throws Exception{
         List<Song> AllSongs = getAllSongs();
@@ -20,7 +21,7 @@ public class SongManager {
     public SongManager() throws IOException {
         this.songDB = new SongDB();
     }
-    private SongDB songDB;
+
 
     public List<Song> getAllSongs() throws Exception {
         return songDB.getAllSongs();

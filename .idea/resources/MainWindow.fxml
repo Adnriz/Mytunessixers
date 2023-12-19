@@ -16,27 +16,27 @@
 
 <AnchorPane prefHeight="892.0" prefWidth="1301.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainControllor">
    <children>
-      <Label layoutX="1004.0" layoutY="120.0" prefHeight="40.0" prefWidth="82.0" text="Songs" textAlignment="CENTER" textFill="#433c3c">
+      <Label layoutX="989.0" layoutY="120.0" prefHeight="40.0" prefWidth="82.0" text="Songs" textAlignment="CENTER" textFill="#433c3c">
          <font>
             <Font name="Franklin Gothic Medium" size="28.0" />
          </font>
       </Label>
-      <Label layoutX="190.0" layoutY="120.0" prefHeight="40.0" prefWidth="101.0" text="Playlists" textAlignment="CENTER" textFill="#433c3c">
+      <Label layoutX="199.0" layoutY="120.0" prefHeight="40.0" prefWidth="101.0" text="Playlists" textAlignment="CENTER" textFill="#433c3c">
          <font>
             <Font name="Franklin Gothic Medium" size="28.0" />
          </font>
       </Label>
-      <Button fx:id="NewPlaylist" layoutX="86.0" layoutY="690.0" mnemonicParsing="false" onAction="#NewPlaylist" text="New ">
+      <Button fx:id="NewPlaylist" layoutX="78.0" layoutY="690.0" mnemonicParsing="false" onAction="#NewPlaylist" text="New ">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="190.0" layoutY="690.0" mnemonicParsing="false" text="Add Song">
+      <Button layoutX="200.0" layoutY="690.0" mnemonicParsing="false" text="Add Song">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="335.0" layoutY="690.0" mnemonicParsing="false" text="Delete">
+      <Button fx:id="deletePlaylist" layoutX="335.0" layoutY="690.0" mnemonicParsing="false" onAction="#deletePlaylist" text="Delete">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
@@ -46,7 +46,7 @@
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="1130.0" layoutY="690.0" mnemonicParsing="false" text="Delete">
+      <Button fx:id="deleteSongs" layoutX="1130.0" layoutY="690.0" mnemonicParsing="false" onAction="#deleteSongs" text="Delete">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
@@ -76,23 +76,23 @@
             <TableColumn fx:id="genreColumn" prefWidth="68.0" text="Genre" />
         </columns>
       </TableView>
-      <TableView fx:id="playlistView" layoutX="78.0" layoutY="183.0" prefHeight="505.0" prefWidth="313.0">
+      <TableView fx:id="playlistView" layoutX="78.0" layoutY="183.0" onMouseClicked="#setPlaylist" prefHeight="505.0" prefWidth="313.0">
         <columns>
           <TableColumn fx:id="tvPlaylistName" prefWidth="119.0" text="Name" />
           <TableColumn fx:id="tvPlaylistSongs" prefWidth="114.0" text="Number of songs" />
             <TableColumn fx:id="tvPlaylistDuration" prefWidth="74.0" text="Time" />
         </columns>
       </TableView>
-      <TextField fx:id="SearchBar" layoutX="1077.0" layoutY="68.0" promptText="Filter:" />
-      <ListView fx:id="moveSongs" layoutX="481.0" layoutY="198.0" prefHeight="345.0" prefWidth="330.0" />
-      <Button fx:id="moveToPlaylist" layoutX="835.0" layoutY="265.0" mnemonicParsing="false" onAction="#moveToPlaylist" text="&lt;--">
+      <TextField fx:id="SearchBar" layoutX="1088.0" layoutY="57.0" promptText="Filter:" />
+      <ListView fx:id="showSongs" layoutX="484.0" layoutY="256.0" prefHeight="295.0" prefWidth="333.0" />
+      <Button fx:id="moveToPlaylist" layoutX="824.0" layoutY="368.0" mnemonicParsing="false" onAction="#moveToPlaylist" prefHeight="71.0" prefWidth="69.0" text="&lt;-">
          <font>
-            <Font size="18.0" />
+            <Font size="27.0" />
          </font>
       </Button>
-      <Button fx:id="removeFromPlaylist" layoutX="835.0" layoutY="371.0" mnemonicParsing="false" onAction="#removeFromPlaylist" text="--&gt;">
+      <Button fx:id="removeFromPlaylist" layoutX="399.0" layoutY="368.0" mnemonicParsing="false" onAction="#removeFromPlaylist" prefHeight="71.0" prefWidth="69.0" text="-&gt;">
          <font>
-            <Font size="18.0" />
+            <Font size="27.0" />
          </font>
       </Button>
    </children>

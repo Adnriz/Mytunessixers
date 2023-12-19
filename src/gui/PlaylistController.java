@@ -1,6 +1,7 @@
 package gui;
 
 import BE.Playlist;
+import BE.Song;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dal.SQLController;
 import javafx.event.ActionEvent;
@@ -52,7 +53,7 @@ public class PlaylistController {
                         statement.setString(1, playlistName.getText().toString());
                         int rowsAffected = statement.executeUpdate();
                         if (rowsAffected > 0) {
-                            Playlist playlist = new Playlist(playlistName.getText().toString());
+                            Playlist playlist = new Playlist(playlistName.getText().toString(),-1);
                             System.out.println("Playlist added to database");
                         } else {
                             System.out.println("Fail, something went wrong");
@@ -64,7 +65,7 @@ public class PlaylistController {
                      ResultSet resultSet = statement.executeQuery();
 
                      while (resultSet.next()) {
-                            Playlist playlist = new Playlist(resultSet.getString("name"));
+                            Playlist playlist = new Playlist(resultSet.getString("name"),resultSet.getInt("id"));
                             // Add the retrieved playlist to your TableView
                          playlistView.getItems().add(playlist);
                         }
@@ -80,7 +81,29 @@ public class PlaylistController {
         }
 
         }
+    public void removeFromPlaylist(Song song) throws Exception {
+        try {
+            if (sqlController == null) {
+                try {
+                    sqlController = new SQLController();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            String sql = "DELETE FROM dbo.Music WHERE GenreID = ?;";
+            try (Connection conn = sqlController.getConnection()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
 
+                stmt.setInt(1, song.getId());
+                stmt.executeUpdate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new Exception("Could not delete song", ex);
+            }
+        } finally {
+
+        }
+    }
 
     public void cancelPlaylist(ActionEvent actionEvent) {
         Stage stage = (Stage) cancelPlaylist.getScene().getWindow();

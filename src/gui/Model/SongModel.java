@@ -1,5 +1,6 @@
 package gui.Model;
 
+import BE.Playlist;
 import bll.util.SongManager;
 import BE.Song;
 import javafx.collections.FXCollections;
@@ -25,10 +26,13 @@ public class SongModel {
         songsToBeHeard.addAll(songManager.getAllSongs());
     }
 
-
-
     public ObservableList<Song> getObservableSongs() {
         return songsToBeHeard;
+    }
+
+    public void updateSongs() throws Exception {
+        songsToBeHeard.clear();
+        songsToBeHeard.addAll(songManager.getAllSongs());
     }
 
 

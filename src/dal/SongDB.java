@@ -34,7 +34,9 @@ public class SongDB {
                 String artist = rs.getString("artist");
                 String genre = rs.getString("genre");
 
-                Song song = new Song(name, artist, genre);
+                int id = rs.getInt("GenreID");
+
+                Song song = new Song(name, artist, genre, id);
                 allSongs.add(song);
             }
             return allSongs;
