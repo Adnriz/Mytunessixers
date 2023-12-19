@@ -4,37 +4,103 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Song {
-    private StringProperty songName;
-    private StringProperty artistName;
-    private StringProperty genre;
+    private int id;
+    private int time;
+    private String fPath;
+    private String formatedTime;
+    private String title;
+    private Artist artist;
+    private Genre type;
 
-    public Song(String songName, String artistName, String genre) {
-        this.songName = new SimpleStringProperty(songName);
-        this.artistName = new SimpleStringProperty(artistName);
-        this.genre = new SimpleStringProperty(genre);
+    public Song(int id, String title, int time, Artist artist, Genre type, String formatedTime, String fPath) {
+        this.id = id;
+        this.title = title;
+        this.time = time;
+        this.formatedTime = this.getConvertedTime();
+        this.artist = artist;
+        this.type = type;
+        this.fPath = fPath;
     }
 
-    public String getSongName() {
-        return songName.get();
+    public Song(String name, String artist, String genre) {
     }
 
-    public void setSongName(String songName) {
-        this.songName.set(songName);
+    public int getId() {
+        return this.id;
     }
 
-    public String getArtistName() {
-        return artistName.get();
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName.set(artistName);
+    public String getTitle() {
+        return this.title;
     }
 
-    public String getGenre() {
-        return genre.get();
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setGenre(String genre) {
-        this.genre.set(genre);
+    public int getTime() {
+        return this.time;
+    }
+
+    public String getConvertedTime() {
+        int hours = this.time / 3600;
+        int minutes = this.time % 3600 / 60;
+        int seconds = this.time % 60;
+        this.formatedTime = hours > 0 ? String.format("%d:%02d:%02d", hours, minutes, seconds) : String.format("%d:%02d", minutes, seconds);
+        return this.formatedTime;
+    }
+
+    public String getFormatedTime() {
+        return this.formatedTime;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+        this.formatedTime = this.getConvertedTime();
+    }
+
+
+    public Artist getArtist() {
+        return this.artist;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
+    public Genre getGenre() {
+        return this.type;
+    }
+
+    public void setGenre(Genre type) {
+        this.type = type;
+    }
+
+    public String getFPath() {
+        return this.fPath;
+    }
+
+    public void setfPath(String fPath) {
+        this.fPath = fPath;
+    }
+
+    public String getTimeStamp() {
+        int minutes = this.time / 60;
+        int seconds = this.time % 60;
+        String textSeconds;
+        if (seconds <= 9) {
+            textSeconds = "0" + seconds;
+        } else {
+            textSeconds = "" + seconds;
+        }
+
+        return "" + minutes + ":" + textSeconds;
+    }
+
+    public String toString() {
+        return this.title;
     }
 }
