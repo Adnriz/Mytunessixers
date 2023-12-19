@@ -8,6 +8,7 @@ import gui.Model.PlaylistModel;
 import gui.Model.SongModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +33,10 @@ import java.util.*;
 
 public class MainControllor implements Initializable{
 
+    @FXML
+    private Button moveToPlaylist;
+    @FXML
+    private Button removeFromPlaylist;
     @FXML
     private TextField SearchBar;
     @FXML
@@ -333,8 +338,5 @@ public class MainControllor implements Initializable{
                 e.printStackTrace();
             }
         })));
-    }
-
-    public void ClearBtn(ActionEvent actionEvent) {
     }
 }

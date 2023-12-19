@@ -26,5 +26,4 @@ public class PlaylistModel {
         return playlistToBeHeard;
     }
 
-
 }
