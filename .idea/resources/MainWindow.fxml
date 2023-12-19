@@ -8,58 +8,49 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="892.0" prefWidth="1301.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainControllor">
+<AnchorPane prefHeight="892.0" prefWidth="1301.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainControllor">
    <children>
-      <Label layoutX="989.0" layoutY="120.0" prefHeight="40.0" prefWidth="82.0" text="Songs" textAlignment="CENTER" textFill="#433c3c">
+      <Label layoutX="1004.0" layoutY="120.0" prefHeight="40.0" prefWidth="82.0" text="Songs" textAlignment="CENTER" textFill="#433c3c">
          <font>
             <Font name="Franklin Gothic Medium" size="28.0" />
          </font>
       </Label>
-      <Label layoutX="199.0" layoutY="120.0" prefHeight="40.0" prefWidth="101.0" text="Playlists" textAlignment="CENTER" textFill="#433c3c">
+      <Label layoutX="190.0" layoutY="120.0" prefHeight="40.0" prefWidth="101.0" text="Playlists" textAlignment="CENTER" textFill="#433c3c">
          <font>
             <Font name="Franklin Gothic Medium" size="28.0" />
          </font>
       </Label>
-      <Button fx:id="NewPlaylist" layoutX="106.0" layoutY="690.0" mnemonicParsing="false" onAction="#NewPlaylist" text="New ">
+      <Button fx:id="NewPlaylist" layoutX="86.0" layoutY="690.0" mnemonicParsing="false" onAction="#NewPlaylist" text="New ">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="165.0" layoutY="690.0" mnemonicParsing="false" text="Add Song">
+      <Button layoutX="190.0" layoutY="690.0" mnemonicParsing="false" text="Add Song">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="320.0" layoutY="690.0" mnemonicParsing="false" text="Delete">
+      <Button layoutX="335.0" layoutY="690.0" mnemonicParsing="false" text="Delete">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="addNewSong" layoutX="897.0" layoutY="690.0" mnemonicParsing="false" onAction="#addNewSong" text="New ">
+      <Button fx:id="addNewSong" layoutX="902.0" layoutY="690.0" mnemonicParsing="false" onAction="#addNewSong" text="New ">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="1106.0" layoutY="690.0" mnemonicParsing="false" text="Delete">
+      <Button layoutX="1130.0" layoutY="690.0" mnemonicParsing="false" text="Delete">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="959.0" layoutY="690.0" mnemonicParsing="false" text="Play">
-         <font>
-            <Font name="Consolas" size="12.0" />
-         </font>
-      </Button>
-      <Button layoutX="250.0" layoutY="690.0" mnemonicParsing="false" text="Filter">
-         <font>
-            <Font name="Consolas" size="12.0" />
-         </font>
-      </Button>
-      <Button layoutX="1031.0" layoutY="690.0" mnemonicParsing="false" text="Filter">
+      <Button layoutX="1023.0" layoutY="690.0" mnemonicParsing="false" text="Play">
          <font>
             <Font name="Consolas" size="12.0" />
          </font>
@@ -84,13 +75,14 @@
             <TableColumn fx:id="genreColumn" prefWidth="68.0" text="Genre" />
         </columns>
       </TableView>
-      <TableView fx:id="playlistView" layoutX="78.0" layoutY="220.0" prefHeight="505.0" prefWidth="313.0">
+      <TableView fx:id="playlistView" layoutX="78.0" layoutY="183.0" prefHeight="505.0" prefWidth="313.0">
         <columns>
           <TableColumn fx:id="tvPlaylistName" prefWidth="119.0" text="Name" />
           <TableColumn fx:id="tvPlaylistSongs" prefWidth="114.0" text="Number of songs" />
             <TableColumn fx:id="tvPlaylistDuration" prefWidth="74.0" text="Time" />
         </columns>
       </TableView>
+      <TextField fx:id="SearchBar" layoutX="1077.0" layoutY="68.0" promptText="Filter:" />
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />
