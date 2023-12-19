@@ -1,6 +1,7 @@
-package dal;
+package db;
 
 import BE.Playlist;
+import db.SQLController;
 
 import java.io.IOException;
 import java.sql.Connection;

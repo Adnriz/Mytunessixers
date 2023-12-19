@@ -1,6 +1,7 @@
-package dal;
+package db;
 
 import BE.Song;
+import db.SQLController;
 
 import java.io.IOException;
 import java.sql.Connection;

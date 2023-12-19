@@ -1,7 +1,7 @@
-package gui;
+package gui.Model;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import dal.SQLController;
+import db.SQLController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.sound.sampled.*;
-import java.beans.Encoder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.io.File;
@@ -21,7 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.*;
-import java.util.Map;
 
 
 public class SongControllor {

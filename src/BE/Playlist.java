@@ -1,41 +1,36 @@
 package BE;
 
 public class Playlist {
-    private String playlistName;
+    private int id;
+    private String name;
 
-    private int numberOfSongs;
-    private String durationOfplaylist;
-
-    public Playlist(String playlistName) {
-        this.playlistName = playlistName;
-    }
-    public String getPlaylistName() {
-        return playlistName;
+    public Playlist(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public int getNumberOfSongs() {
-        return numberOfSongs;
+    public Playlist() {
     }
 
-    public String getDurationOfplaylist() {
-        return durationOfplaylist;
-    }
-    public void setPlaylistName(String playlistName) {
-        this.playlistName = playlistName;
+    public Playlist(String name) {
     }
 
-    public void setNumberOfSongs(int numberOfSongs) {
-        this.numberOfSongs = numberOfSongs;
+    public int getId() {
+        return this.id;
     }
 
-    public void setDurationOfplaylist(String durationOfplaylist) {
-        this.durationOfplaylist = durationOfplaylist;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public String getName() {
+        return this.name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-
-
-
-
+    public void setPlaylistID(int newPlaylistId) {
+    }
 }

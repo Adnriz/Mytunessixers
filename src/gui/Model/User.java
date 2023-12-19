@@ -1,12 +1,14 @@
 // User.java
-package gui;
+package gui.Model;
+
+import gui.Model.SongControllor;
 
 public class User {
 
     private SongControllor songControllor;
     private String username;
 
-    // Constructor, getters, setters, etc.
+    // Constructor, getters, setters.
 
     public User(String username) {
         this.username = username;
@@ -17,5 +19,5 @@ public class User {
 
     }
 
-    // Add other user-related properties and methods as needed
+
 }

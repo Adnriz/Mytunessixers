@@ -1,8 +1,9 @@
-package gui;
+package gui.Model;
 
 import BE.Playlist;
+import BE.Song;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import dal.SQLController;
+import db.SQLController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,7 +19,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PlaylistController {
-
+    @FXML
+    private TableView<Song>songTableView;
+    @FXML
+    private TableView<Song> playlistTableView;
     @FXML
     private TableView<Playlist> playlistView;
     @FXML
