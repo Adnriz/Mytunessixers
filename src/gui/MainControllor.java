@@ -33,6 +33,8 @@ import java.util.*;
 public class MainControllor implements Initializable{
 
     @FXML
+    private TextField SearchBar;
+    @FXML
     private Pane pane;
     @FXML
     private Label songLabel;
@@ -88,14 +90,14 @@ public class MainControllor implements Initializable{
             e.printStackTrace();
         }
         this.songModel = new SongModel();
-         try {
-        playlistModel = new PlaylistModel();
-    }
+        try {
+            playlistModel = new PlaylistModel();
+        }
         catch (Exception e) {
-        e.printStackTrace();
-    }
+            e.printStackTrace();
+        }
         this.playlistModel = new PlaylistModel();
-}
+    }
     @FXML
     private void addNewSong(ActionEvent actionEvent) throws Exception{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SongManager.fxml"));
@@ -117,20 +119,105 @@ public class MainControllor implements Initializable{
         stage.show();
     }
 
-        @Override
-        public void initialize(URL arg0, ResourceBundle arg1) {
-            songs = new ArrayList<File>();
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        songs = new ArrayList<File>();
 
-            directory = new File(".idea/Music");
+        directory = new File(".idea/Music");
 
-            files = directory.listFiles();
+        files = directory.listFiles();
 
-            if(files != null) {
+        if(files != null) {
 
-                for(File file : files) {
+            for(File file : files) {
 
-                    songs.add(file);
-                }
+                songs.add(file);
+            }
+        }
+
+        media = new Media(songs.get(songNumber).toURI().toString());
+        mediaPlayer = new MediaPlayer(media);
+
+        songLabel.setText(songs.get(songNumber).getName());
+
+        for(int i = 0; i < speeds.length; i++) {
+
+            speedBox.getItems().add(Integer.toString(speeds[i])+"%");
+        }
+
+        speedBox.setOnAction(this::changeSpeed);
+
+        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+                mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+            }
+        });
+
+        ObservableList<TablePosition> selectedCells = playlistView.getSelectionModel().getSelectedCells() ;
+        selectedCells.addListener((ListChangeListener.Change<? extends TablePosition> change) -> {
+            if (selectedCells.size() > 0) {
+                TablePosition selectedCell = selectedCells.get(0);
+                TableColumn column = selectedCell.getTableColumn();
+                int rowIndex = selectedCell.getRow();
+                Object playlist = column.getCellObservableValue(rowIndex).getValue();
+                System.out.println("All I want for christmas is you");
+            }
+        });
+
+
+        songProgressBar.setStyle("-fx-accent: #00FF00;");
+
+        // Initialize the person table with the two columns.
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("songName"));
+        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
+        genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+
+        tvPlaylistName.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
+
+        // add data from observable list
+        songTableView.setItems(songModel.getObservableSongs());
+        ObservableList<Song> songs = songModel.getObservableSongs();
+
+        playlistView.setItems(playlistModel.getObservablePlaylists());
+        ObservableList<Playlist> playlists = playlistModel.getObservablePlaylists();
+
+        Searcher();
+
+    }
+
+    public void playMedia() {
+
+        beginTimer();
+        changeSpeed(null);
+        mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+        mediaPlayer.play();
+    }
+
+    public void pauseMedia() {
+
+        cancelTimer();
+        mediaPlayer.pause();
+    }
+
+    public void resetMedia() {
+
+        songProgressBar.setProgress(0);
+        mediaPlayer.seek(Duration.seconds(0));
+    }
+
+    public void previousMedia() {
+
+        if(songNumber > 0) {
+
+            songNumber--;
+
+            mediaPlayer.stop();
+
+            if(running) {
+
+                cancelTimer();
             }
 
             media = new Media(songs.get(songNumber).toURI().toString());
@@ -138,187 +225,116 @@ public class MainControllor implements Initializable{
 
             songLabel.setText(songs.get(songNumber).getName());
 
-            for(int i = 0; i < speeds.length; i++) {
+            playMedia();
+        }
+        else {
 
-                speedBox.getItems().add(Integer.toString(speeds[i])+"%");
+            songNumber = songs.size() - 1;
+
+            mediaPlayer.stop();
+
+            if(running) {
+
+                cancelTimer();
             }
 
-            speedBox.setOnAction(this::changeSpeed);
+            media = new Media(songs.get(songNumber).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
 
-            volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            songLabel.setText(songs.get(songNumber).getName());
 
-                @Override
-                public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
-                    mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
-                }
-            });
-
-            ObservableList<TablePosition> selectedCells = playlistView.getSelectionModel().getSelectedCells() ;
-            selectedCells.addListener((ListChangeListener.Change<? extends TablePosition> change) -> {
-                if (selectedCells.size() > 0) {
-                    TablePosition selectedCell = selectedCells.get(0);
-                    TableColumn column = selectedCell.getTableColumn();
-                    int rowIndex = selectedCell.getRow();
-                    Object playlist = column.getCellObservableValue(rowIndex).getValue();
-                    System.out.println("All I want for christmas is you");
-                }
-            });
-
-
-            songProgressBar.setStyle("-fx-accent: #00FF00;");
-
-            // Initialize the person table with the two columns.
-            titleColumn.setCellValueFactory(new PropertyValueFactory<>("songName"));
-            artistColumn.setCellValueFactory(new PropertyValueFactory<>("artistName"));
-            genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-
-            tvPlaylistName.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
-
-            // add data from observable list
-            songTableView.setItems(songModel.getObservableSongs());
-            ObservableList<Song> songs = songModel.getObservableSongs();
-
-            playlistView.setItems(playlistModel.getObservablePlaylists());
-            ObservableList<Playlist> playlists = playlistModel.getObservablePlaylists();
-
+            playMedia();
         }
+    }
 
-        public void playMedia() {
+    public void nextMedia() {
 
-            beginTimer();
-            changeSpeed(null);
-            mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
-            mediaPlayer.play();
+        if(songNumber < songs.size() - 1) {
+
+            songNumber++;
+
+            mediaPlayer.stop();
+
+            if(running) {
+
+                cancelTimer();
+            }
+
+            media = new Media(songs.get(songNumber).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+
+            songLabel.setText(songs.get(songNumber).getName());
+
+            playMedia();
         }
+        else {
 
-        public void pauseMedia() {
+            songNumber = 0;
 
-            cancelTimer();
-            mediaPlayer.pause();
+            mediaPlayer.stop();
+
+            media = new Media(songs.get(songNumber).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+
+            songLabel.setText(songs.get(songNumber).getName());
+
+            playMedia();
         }
+    }
 
-        public void resetMedia() {
+    public void changeSpeed(ActionEvent event) {
 
-            songProgressBar.setProgress(0);
-            mediaPlayer.seek(Duration.seconds(0));
+        if(speedBox.getValue() == null) {
+
+            mediaPlayer.setRate(1);
         }
+        else {
 
-        public void previousMedia() {
+            mediaPlayer.setRate(Integer.parseInt(speedBox.getValue().substring(0, speedBox.getValue().length() - 1)) * 0.01);
+        }
+    }
 
-            if(songNumber > 0) {
+    public void beginTimer() {
 
-                songNumber--;
+        timer = new Timer();
 
-                mediaPlayer.stop();
+        task = new TimerTask() {
 
-                if(running) {
+            public void run() {
+
+                running = true;
+                double current = mediaPlayer.getCurrentTime().toSeconds();
+                double end = media.getDuration().toSeconds();
+                songProgressBar.setProgress(current/end);
+
+                if(current/end == 1) {
 
                     cancelTimer();
                 }
-
-                media = new Media(songs.get(songNumber).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-
-                songLabel.setText(songs.get(songNumber).getName());
-
-                playMedia();
             }
-            else {
+        };
 
-                songNumber = songs.size() - 1;
+        timer.scheduleAtFixedRate(task, 100, 500);
+    }
 
-                mediaPlayer.stop();
+    public void cancelTimer() {
 
-                if(running) {
+        running = false;
+        timer.cancel();
+    }
 
-                    cancelTimer();
-                }
-
-                media = new Media(songs.get(songNumber).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-
-                songLabel.setText(songs.get(songNumber).getName());
-
-                playMedia();
+    private void Searcher(){
+        SearchBar.textProperty().addListener((((observable, oldValue, newValue) ->
+        {
+            try{
+                songModel.SearchMethod(newValue);
             }
-        }
-
-        public void nextMedia() {
-
-            if(songNumber < songs.size() - 1) {
-
-                songNumber++;
-
-                mediaPlayer.stop();
-
-                if(running) {
-
-                    cancelTimer();
-                }
-
-                media = new Media(songs.get(songNumber).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-
-                songLabel.setText(songs.get(songNumber).getName());
-
-                playMedia();
+            catch (Exception e){
+                e.printStackTrace();
             }
-            else {
+        })));
+    }
 
-                songNumber = 0;
-
-                mediaPlayer.stop();
-
-                media = new Media(songs.get(songNumber).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-
-                songLabel.setText(songs.get(songNumber).getName());
-
-                playMedia();
-            }
-        }
-
-        public void changeSpeed(ActionEvent event) {
-
-            if(speedBox.getValue() == null) {
-
-                mediaPlayer.setRate(1);
-            }
-            else {
-
-                mediaPlayer.setRate(Integer.parseInt(speedBox.getValue().substring(0, speedBox.getValue().length() - 1)) * 0.01);
-            }
-        }
-
-        public void beginTimer() {
-
-            timer = new Timer();
-
-            task = new TimerTask() {
-
-                public void run() {
-
-                    running = true;
-                    double current = mediaPlayer.getCurrentTime().toSeconds();
-                    double end = media.getDuration().toSeconds();
-                    songProgressBar.setProgress(current/end);
-
-                    if(current/end == 1) {
-
-                        cancelTimer();
-                    }
-                }
-            };
-
-            timer.scheduleAtFixedRate(task, 100, 500);
-        }
-
-        public void cancelTimer() {
-
-            running = false;
-            timer.cancel();
-        }
-
-
-
+    public void ClearBtn(ActionEvent actionEvent) {
+    }
 }
