@@ -23,6 +23,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -83,6 +85,7 @@ public class MainControllor implements Initializable{
 
     @FXML
     private ListView<Song> showSongs;
+
 
     @FXML
     private TableView<Song> tableView;
@@ -159,18 +162,6 @@ public class MainControllor implements Initializable{
                 }
             });
 
-           /* ObservableList<TablePosition> selectedCells = playlistView.getSelectionModel().getSelectedCells() ;
-            selectedCells.addListener((ListChangeListener.Change<? extends TablePosition> change) -> {
-                if (selectedCells.size() > 0) {
-                    TablePosition selectedCell = selectedCells.get(0);
-                    TableColumn column = selectedCell.getTableColumn();
-                    int rowIndex = selectedCell.getRow();
-                    Object playlist = column.getCellObservableValue(rowIndex).getValue();
-                    System.out.println("All I want for christmas is you");
-                }
-            });*/
-
-
             songProgressBar.setStyle("-fx-accent: #00FF00;");
             update();
             Searcher();
@@ -208,11 +199,11 @@ public class MainControllor implements Initializable{
             
         }
         public void playMedia() {
-
             beginTimer();
             changeSpeed(null);
             mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
             mediaPlayer.play();
+
         }
 
         public void pauseMedia() {

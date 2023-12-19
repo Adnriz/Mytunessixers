@@ -36,6 +36,7 @@ public class PlaylistController {
     public void setMainController(MainControllor mainController) {
         this.mainControllor = mainController;
     }
+
     public void addPlaylistbtn(ActionEvent actionEvent) throws SQLServerException {
         if (playlistName.getText().isEmpty()) {
             errorNoNameLabel.setText("Error: Playlist must have a name");
@@ -47,6 +48,9 @@ public class PlaylistController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                }
+                if(playlistView == null) {
+                    playlistView = new TableView<>();
                 }
                 try (Connection connection = sqlController.getConnection()) {
                     try (PreparedStatement statement = connection.prepareStatement("INSERT INTO Playlist (name) VALUES (?)")) {
@@ -68,6 +72,7 @@ public class PlaylistController {
                             Playlist playlist = new Playlist(resultSet.getString("name"),resultSet.getInt("id"));
                             // Add the retrieved playlist to your TableView
                          playlistView.getItems().add(playlist);
+                         mainControllor.update();
                         }
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
@@ -80,7 +85,8 @@ public class PlaylistController {
             }
         }
 
-        }
+    }
+
     public void removeFromPlaylist(Song song) throws Exception {
         try {
             if (sqlController == null) {

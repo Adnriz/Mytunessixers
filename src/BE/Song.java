@@ -9,13 +9,21 @@ public class Song {
     private StringProperty genre;
     private int id;
 
-    public Song(String songName, String artistName, String genre, int id) {
+    private String filePath;
+
+    public Song(String songName, String artistName, String genre, int id, String filePath) {
         this.songName = new SimpleStringProperty(songName);
         this.artistName = new SimpleStringProperty(artistName);
         this.genre = new SimpleStringProperty(genre);
         this.id = id;
+        this.filePath = filePath;
     }
 
+
+    public String getFilePath()
+    {
+        return this.filePath;
+    }
     public String getSongName() {
         return songName.get();
     }

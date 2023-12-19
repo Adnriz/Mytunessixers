@@ -98,10 +98,11 @@ public class PlaylistDB {
                     String name = rs.getString("title");
                     String artist = rs.getString("artist");
                     String genre = rs.getString("genre");
+                    String filePath = rs.getString("filepath");
 
                     int id = rs.getInt("GenreID");
 
-                    songs.add(new Song(name, artist, genre, id));
+                    songs.add(new Song(name, artist, genre, id, filePath));
                 }
             }
         } catch (SQLException e) {

@@ -33,10 +33,11 @@ public class SongDB {
                 String name = rs.getString("title");
                 String artist = rs.getString("artist");
                 String genre = rs.getString("genre");
+                String filePath = rs.getString("filepath");
 
                 int id = rs.getInt("GenreID");
 
-                Song song = new Song(name, artist, genre, id);
+                Song song = new Song(name, artist, genre, id, filePath);
                 allSongs.add(song);
             }
             return allSongs;
