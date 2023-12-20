@@ -8,6 +8,8 @@ import bll.util.SongManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 public class PlaylistModel {
     private ObservableList<Playlist> playlistToBeHeard;
     private ObservableList<Song> songsInPlaylist;
@@ -15,6 +17,9 @@ public class PlaylistModel {
 
 
     private PlaylistManager playlistManager;
+    public Playlist getPlaylist(){
+        return playlist;
+    }
 
 
     public PlaylistModel() throws Exception {
@@ -50,15 +55,19 @@ public class PlaylistModel {
         playlistManager.removeFromPlaylist(playlistSong);
     }
 
-    public Playlist getPlaylist(){
-        return playlist;
-    }
 
     public void setPlaylist(Playlist playlist){
         this.playlist = playlist;
     }
 
     public void deletePlaylist(Playlist playlist) throws Exception {
-        playlistManager.deletePlaylist(playlist);
+        if (playlist != null) {
+            playlistManager.deletePlaylist(playlist);
+            playlistToBeHeard.remove(playlist);  // remove the playlist from observable list
+        }
+    }
+    public List<Song> getPlaylistSongs(Playlist playlist) throws Exception {
+        return playlistManager.getSongsInPlaylist(playlist);
     }
 }
+

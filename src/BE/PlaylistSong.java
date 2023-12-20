@@ -2,6 +2,7 @@ package BE;
 
 import dal.SQLController;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,5 +32,9 @@ public class PlaylistSong {
 
     public int getSongId() {
         return songId;
+    }
+
+    public File getSong() {
+        return null;
     }
 }

@@ -56,4 +56,8 @@ public class Song {
     public String toString() {
         return songName.get() + " by " + artistName.get();
     }
+
+    public String getSongLocation() {
+        return null;
+    }
 }

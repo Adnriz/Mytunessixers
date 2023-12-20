@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -41,6 +42,7 @@ public class MainControllor implements Initializable{
     private Pane pane;
     @FXML
     private Label songLabel;
+
     @FXML
     private Button playButton, pauseButton, resetButton, previousButton, nextButton;
     @FXML
@@ -57,7 +59,7 @@ public class MainControllor implements Initializable{
 
     private ArrayList<File> songs;
 
-    private int songNumber;
+    private int songNumber = 0;
     private int[] speeds = {25, 50, 75, 100, 125, 150, 175, 200};
 
     private Timer timer;
@@ -86,6 +88,9 @@ public class MainControllor implements Initializable{
     @FXML
     private ListView<Song> showSongs;
 
+    private Playlist currentPlaylist;
+    private Song currentSong;
+    private List<Song> currentSongList;
 
     @FXML
     private TableView<Song> tableView;
@@ -120,6 +125,7 @@ public class MainControllor implements Initializable{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlaylistWindow.fxml"));
         Parent root = loader.load();
         PlaylistController playlistController = loader.getController();
+        playlistController.setMainController(this);  // This is the line you have to add
         Stage stage = new Stage();
         stage.setTitle("Playlist Manager");
         stage.setScene(new Scene(root));
@@ -141,6 +147,20 @@ public class MainControllor implements Initializable{
                     songs.add(file);
                 }
             }
+
+            nextButton.setOnAction(event -> nextSong());
+            previousButton.setOnAction(event -> previousSong());
+            playButton.setOnAction(event -> {
+                if (mediaPlayer != null) {
+                    mediaPlayer.play();
+                }
+            });
+            pauseButton.setOnAction(event -> {
+                if (mediaPlayer != null) {
+                    mediaPlayer.pause();
+                }
+            });
+            songTableView.setOnMouseClicked(this::setSong);
 
             media = new Media(songs.get(songNumber).toURI().toString());
             mediaPlayer = new MediaPlayer(media);
@@ -198,13 +218,13 @@ public class MainControllor implements Initializable{
             }
             
         }
-        public void playMedia() {
-            beginTimer();
-            changeSpeed(null);
-            mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
-            mediaPlayer.play();
+    public void playMedia() {
 
-        }
+        beginTimer();
+        changeSpeed(null);
+        mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
+        mediaPlayer.play();
+    }
 
         public void pauseMedia() {
 
@@ -258,42 +278,38 @@ public class MainControllor implements Initializable{
             }
         }
 
-        public void nextMedia() {
+    public void nextMedia() {
+        if(songNumber < songs.size() - 1) {
+            songNumber++;
 
-            if(songNumber < songs.size() - 1) {
+            mediaPlayer.stop();
 
-                songNumber++;
-
-                mediaPlayer.stop();
-
-                if(running) {
-
-                    cancelTimer();
-                }
-
-                media = new Media(songs.get(songNumber).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
-
-                songLabel.setText(songs.get(songNumber).getName());
-
-                playMedia();
+            if(running) {
+                cancelTimer();
             }
-            else {
 
-                songNumber = 0;
+            media = new Media(songs.get(songNumber).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
 
-                mediaPlayer.stop();
+            songLabel.setText(songs.get(songNumber).getName());
 
-                media = new Media(songs.get(songNumber).toURI().toString());
-                mediaPlayer = new MediaPlayer(media);
+            playMedia();
+        } else {
+            // If it's last song, reset the song number to 0 for a loop-back mechanism.
+            songNumber = 0;
 
-                songLabel.setText(songs.get(songNumber).getName());
+            mediaPlayer.stop();
 
-                playMedia();
-            }
+            media = new Media(songs.get(songNumber).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+
+            songLabel.setText(songs.get(songNumber).getName());
+
+            playMedia();
         }
+    }
 
-        public void changeSpeed(ActionEvent event) {
+            public void changeSpeed(ActionEvent event) {
 
             if(speedBox.getValue() == null) {
 
@@ -365,8 +381,13 @@ public class MainControllor implements Initializable{
 
     public void deletePlaylist(ActionEvent actionEvent) {
         try {
-            playlistModel.deletePlaylist(playlistModel.getPlaylist());
-            update();
+            Playlist playlist = playlistView.getSelectionModel().getSelectedItem();
+            if (playlist != null) {
+                playlistModel.deletePlaylist(playlist);
+                update();  // If update is responsible for refreshing your table view.
+            } else {
+                // Handle situation when there is no playlist selected, e.g., give feedback to the user.
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -392,7 +413,155 @@ public class MainControllor implements Initializable{
         }
     }
 
-    public void setPlaylist(MouseEvent mouseEvent) {
-        playlistModel.setPlaylist(playlistView.getSelectionModel().getSelectedItem());
+    public void setPlaylist(MouseEvent event) throws Exception {
+        // check if it's a double click
+        if (event.getButton().equals(MouseButton.PRIMARY)
+                && event.getClickCount() == 2) {
+
+            // get selected playlist
+            Playlist clickedPlaylist = playlistView.getSelectionModel().getSelectedItem();
+            // check if it's a new playlist
+            if (currentPlaylist == null || !currentPlaylist.equals(clickedPlaylist)) {
+                // if it's a different playlist, reset song index and set currentPlaylist
+                songNumber = 0;
+                currentPlaylist = clickedPlaylist;
+            } else {
+                // else, it's same playlist, increment to next song
+                songNumber++;
+            }
+
+            //Received songs from playlist through some GET method.
+            List<Song> playlistSongs = playlistModel.getPlaylistSongs(currentPlaylist);
+
+            if (songNumber < playlistSongs.size()) {
+
+                mediaPlayer.stop();
+
+                if (running) {
+                    cancelTimer();
+                }
+
+                // obtaining song object from playlistSongs
+                Song currentSong = playlistSongs.get(songNumber);
+
+                // use getter methods from Song class
+                String songLocation = currentSong.getFilePath();
+                media = new Media(new File(songLocation).toURI().toString());
+
+                mediaPlayer = new MediaPlayer(media);
+                songLabel.setText(currentSong.getSongName());
+
+                mediaPlayer.play();
+            }
+        }
+    }
+    public void nextSong() {
+        if (currentPlaylist == null) {
+            // either return or set a default playlist
+            return;
+        }
+
+        List<Song> playlistSongs;
+        try {
+            playlistSongs = playlistModel.getPlaylistSongs(currentPlaylist);
+        } catch (Exception e) {
+            // handle the exception
+            e.printStackTrace();
+            return;
+        }
+
+        if (songNumber < playlistSongs.size() - 1) {
+            songNumber++;
+            playSongInPlaylist();
+        } else {
+            // if there's no next song, either wrap around to the beginning of the playlist
+            // songNumber = 0;
+            // playSongInPlaylist();
+
+            // or stop the player
+            mediaPlayer.stop();
+            // and optionally reset the songNumber to -1, so starting the player again will start at the first song
+            // songNumber = -1;
+        }
+    }
+
+    public void previousSong() {
+        if (currentPlaylist == null) {
+            // either return or set a default playlist
+            return;
+        }
+
+        if (songNumber > 0) {
+            songNumber--;
+            playSongInPlaylist();
+        } else {
+            // if there's no previous song, either wrap around to the end of the playlist
+            // try {
+            //     songNumber = playlistModel.getPlaylistSongs(currentPlaylist).size() - 1;
+            // } catch (Exception e) {
+            //     // handle the exception
+            //     e.printStackTrace();
+            //     return;
+            // }
+            // playSongInPlaylist();
+
+            // or stop the player
+            mediaPlayer.stop();
+            // and optionally reset the songNumber to 0, so starting the player again will start at the first song
+            // songNumber = 0;
+        }
+    }
+
+    private void playSongInPlaylist() {
+        Song currentSong;
+        try {
+            currentSong = playlistModel.getPlaylistSongs(currentPlaylist).get(songNumber);
+        } catch (Exception e) {
+            // handle the exception
+            e.printStackTrace();
+            return;
+        }
+
+        mediaPlayer.stop();
+
+        if (running) {
+            cancelTimer();
+        }
+
+        String songLocation = currentSong.getFilePath();
+        media = new Media(new File(songLocation).toURI().toString());
+
+        mediaPlayer = new MediaPlayer(media);
+        songLabel.setText(currentSong.getSongName());
+
+        mediaPlayer.play();
+    }
+    public void setSong(MouseEvent event) {
+        // check if it's a double click
+        if (event.getButton().equals(MouseButton.PRIMARY)
+                && event.getClickCount() == 2) {
+
+            // get selected song
+            Song selectedSong = (Song) songTableView.getSelectionModel().getSelectedItem();
+
+            if (selectedSong != null) {
+                // stop currently playing song
+                if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                    if (running) {
+                        cancelTimer();
+                    }
+                }
+
+                // play selected song
+                String songLocation = selectedSong.getFilePath();
+                media = new Media(new File(songLocation).toURI().toString());
+
+                mediaPlayer = new MediaPlayer(media);
+                songLabel.setText(selectedSong.getSongName());
+
+                mediaPlayer.play();
+            }
+        }
     }
 }
