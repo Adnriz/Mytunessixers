@@ -31,6 +31,8 @@ public class PlaylistController {
     private TextField playlistName;
     @FXML
     private Label errorNoNameLabel;
+    @FXML
+    private Button addPlaylistbtn;
     private MainControllor mainControllor;
 
     public void setMainController(MainControllor mainController) {
@@ -73,6 +75,8 @@ public class PlaylistController {
                             // Add the retrieved playlist to your TableView
                          playlistView.getItems().add(playlist);
                          mainControllor.update();
+                         Stage stage = (Stage) addPlaylistbtn.getScene().getWindow();
+                         stage.close();
                         }
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
