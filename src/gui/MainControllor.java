@@ -96,12 +96,12 @@ public class MainControllor implements Initializable{
     private TableView<Song> tableView;
     public MainControllor() throws Exception {
         try {
-            songModel = new SongModel();
+            songModel = SongModel.getInstance();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        this.songModel = new SongModel();
+        this.songModel = SongModel.getInstance();
          try {
         playlistModel = new PlaylistModel();
     }

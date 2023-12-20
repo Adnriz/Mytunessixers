@@ -11,8 +11,23 @@ import java.util.List;
 public class SongModel {
     private ObservableList<Song> songsToBeHeard;
 
+    private static SongModel instance;  // Singleton instance
 
     private SongManager songManager;
+
+    public static SongModel getInstance() throws Exception {
+        if (instance == null)
+            instance = new SongModel();
+        return instance;
+    }
+
+    private SongModel() throws Exception {
+        songManager = new SongManager();
+        songsToBeHeard = FXCollections.observableArrayList();
+        songsToBeHeard.addAll(songManager.getAllSongs());
+    }
+
+
 
     public void SearchMethod(String query) throws Exception{
         List<Song> SearchResults = songManager.SearchSongs(query);
@@ -20,11 +35,6 @@ public class SongModel {
         songsToBeHeard.addAll(SearchResults);
     }
 
-    public SongModel() throws Exception {
-        songManager = new SongManager();
-        songsToBeHeard = FXCollections.observableArrayList();
-        songsToBeHeard.addAll(songManager.getAllSongs());
-    }
 
     public ObservableList<Song> getObservableSongs() {
         return songsToBeHeard;

@@ -2,6 +2,7 @@ package gui;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import dal.SQLController;
+import gui.Model.SongModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -144,6 +145,8 @@ public class SongControllor {
 
                     if (rowsAffected > 0) {
                         System.out.println("Song added without fail");
+                        // Fetch the SongModel instance and update songs
+                        SongModel.getInstance().updateSongs();
                     } else {
                         System.out.println("Fail, something went wrong");
                     }
@@ -154,7 +157,7 @@ public class SongControllor {
             } finally {
 
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
